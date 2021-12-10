@@ -25,4 +25,4 @@ export class RekeningDto {
     user: CreateUserDto
 }
 export class CreateRekeningDto extends OmitType(RekeningDto, ['id']) {}
-export class RekeningId extends PickType(RekeningDto, ['id']) {}
+export class RekeningIdDto extends PickType(RekeningDto, ['id']) {}

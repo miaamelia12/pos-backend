@@ -15,7 +15,7 @@ export class RekeningService {
   }
 
   findAll() {
-    return this.rekeningRepo.find();
+    return this.rekeningRepo.find({relations: ['user']});
   }
 
   findOne(id: number) {

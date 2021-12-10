@@ -4,30 +4,27 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private userService: UserService,
-        private jwtService: JwtService
-    ) {
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
+  async cekUser(username, password) {
+    const user = await this.userService.findUsername(username);
+    if (user) {
+      const valid = this.userService.compare(password, user.password);
+      if (valid) {
+        return user;
+      } else {
+        throw new BadRequestException({ message: 'Wrong Password' });
+      }
+    } else {
+      throw new BadRequestException({ message: 'Username has not found' });
+    }
+  }
 
-    }
-    async cekUser(username,password) {
-        let user = await this.userService.findUsername(username)
-        if(user) {
-            const valid = this.userService.compare(password, user.password)
-            if(valid) {
-                return user
-            } else {
-                throw new BadRequestException({message:'Wrong Password'})
-            }
-        }
-        else {
-            throw new BadRequestException({message: 'Username has not found'})
-        }
-    }
-
-    generateToken(user:any){
-        let dataToken = {id:user.id}
-        let token = this.jwtService.sign(dataToken)
-        return {token:token}
-    }
+  generateToken(user: any) {
+    const dataToken = { id: user.id };
+    const token = this.jwtService.sign(dataToken);
+    return { token: token };
+  }
 }
